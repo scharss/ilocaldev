@@ -204,9 +204,6 @@ opcache.validate_timestamps = 0
 
 This project is licensed under the MIT License. See `LICENSE` for details.
 
-## 🆘 Support
-
-Encountering issues? Please open an [issue](https://github.com/your-username/ilocaldev/issues)!
 
 ---
 
