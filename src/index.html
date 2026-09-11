@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ilocaldev | PHP Development Environment</title>
+    <style>
+        :root {
+            --bg-body: #0f172a;
+            --bg-card: #1e293b;
+            --bg-card-hover: #243248;
+            --border: #334155;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-blue: #38bdf8;
+            --accent-indigo: #818cf8;
+            --accent-green: #34d399;
+            --accent-amber: #fbbf24;
+            --code-bg: #0b1120;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2.5rem 1.5rem;
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.08) 0%, rgba(129, 140, 248, 0.08) 100%);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+        }
+
+        .badge-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background-color: rgba(52, 211, 153, 0.15);
+            color: var(--accent-green);
+            padding: 0.35rem 0.85rem;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(52, 211, 153, 0.3);
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--accent-green);
+            box-shadow: 0 0 8px var(--accent-green);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.75rem;
+            background: linear-gradient(135deg, #ffffff 40%, var(--accent-blue) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p.lead {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            max-width: 750px;
+            margin: 0 auto;
+        }
+
+        /* Services Grid */
+        .services-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .service-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent-blue);
+        }
+
+        .service-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .service-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+        }
+
+        .service-tag {
+            font-size: 0.75rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 6px;
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--accent-blue);
+            font-weight: 600;
+        }
+
+        .service-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 1.25rem;
+        }
+
+        .service-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            background-color: #2563eb;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+        }
+
+        .service-link:hover {
+            background-color: #1d4ed8;
+        }
+
+        .service-link.outline {
+            background-color: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+        }
+
+        .service-link.outline:hover {
+            background-color: var(--border);
+        }
+
+        /* 2-Column Details Grid */
+        .details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        @media (max-width: 820px) {
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .panel {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .panel-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.75rem;
+        }
+
+        /* Table Styles */
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        .info-table td {
+            padding: 0.55rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .info-table td:first-child {
+            color: var(--text-muted);
+            font-weight: 500;
+            width: 45%;
+        }
+
+        .info-table td:last-child {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            color: var(--accent-blue);
+        }
+
+        /* Badges list */
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .tag-item {
+            background-color: var(--code-bg);
+            border: 1px solid var(--border);
+            padding: 0.3rem 0.65rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            color: var(--accent-indigo);
+        }
+
+        /* Code snippets */
+        .code-block {
+            background-color: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.85rem 1rem;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 0.85rem;
+            color: #e2e8f0;
+            position: relative;
+            margin-bottom: 0.85rem;
+            overflow-x: auto;
+        }
+
+        .use-cases-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            font-size: 0.9rem;
+        }
+
+        .use-cases-list li {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-main);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="badge-pill">
+                <div class="pulse-dot"></div>
+                ilocaldev stack is ready
+            </div>
+            <h1>🐳 ilocaldev</h1>
+            <p class="lead">
+                Optimized, plug-and-play Docker development environment for PHP 8.2 & MySQL 8.0 with pre-configured extensions for QR codes, Excel handling, and APIs.
+            </p>
+        </header>
+
+        <!-- Services Quick Access -->
+        <section class="services-bar">
+            <div class="service-card">
+                <div>
+                    <div class="service-header">
+                        <span class="service-title">🌐 Web Application</span>
+                        <span class="service-tag">Port 8080</span>
+                    </div>
+                    <p class="service-desc">PHP 8.2 + Apache serving your source code from the <code>src/</code> directory.</p>
+                </div>
+                <a href="http://localhost:8080" class="service-link">Access App (8080)</a>
+            </div>
+
+            <div class="service-card">
+                <div>
+                    <div class="service-header">
+                        <span class="service-title">⚙️ phpMyAdmin</span>
+                        <span class="service-tag">Port 8081</span>
+                    </div>
+                    <p class="service-desc">Visual database manager with high memory (512M) and upload limits (256M).</p>
+                </div>
+                <a href="http://localhost:8081" target="_blank" rel="noopener noreferrer" class="service-link outline">Open phpMyAdmin ↗</a>
+            </div>
+
+            <div class="service-card">
+                <div>
+                    <div class="service-header">
+                        <span class="service-title">🗄️ MySQL Server</span>
+                        <span class="service-tag">Port 33061</span>
+                    </div>
+                    <p class="service-desc">MySQL 8.0 with persistent data storage volume (<code>db_data_avanzado</code>).</p>
+                </div>
+                <div class="service-link outline" style="cursor: default;">Host: localhost:33061</div>
+            </div>
+        </section>
+
+        <!-- Details Grid -->
+        <div class="details-grid">
+            <!-- Database Configuration -->
+            <div class="panel">
+                <h2 class="panel-title">🔑 Database Credentials</h2>
+                <table class="info-table">
+                    <tbody>
+                        <tr>
+                            <td>Internal Host (Docker)</td>
+                            <td>db</td>
+                        </tr>
+                        <tr>
+                            <td>External Host (Host PC)</td>
+                            <td>localhost:33061</td>
+                        </tr>
+                        <tr>
+                            <td>Database Name</td>
+                            <td>mi_base_de_datos</td>
+                        </tr>
+                        <tr>
+                            <td>Default User</td>
+                            <td>mi_usuario_db</td>
+                        </tr>
+                        <tr>
+                            <td>Default Password</td>
+                            <td>root</td>
+                        </tr>
+                        <tr>
+                            <td>Root User</td>
+                            <td>root</td>
+                        </tr>
+                        <tr>
+                            <td>Root Password</td>
+                            <td>Hholamundo256@</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Optimized PHP Settings -->
+            <div class="panel">
+                <h2 class="panel-title">⚡ PHP 8.2 Environment</h2>
+                <table class="info-table">
+                    <tbody>
+                        <tr>
+                            <td>Memory Limit</td>
+                            <td>512 MB</td>
+                        </tr>
+                        <tr>
+                            <td>Upload Max Filesize</td>
+                            <td>128 MB</td>
+                        </tr>
+                        <tr>
+                            <td>Post Max Size</td>
+                            <td>128 MB</td>
+                        </tr>
+                        <tr>
+                            <td>Max Execution Time</td>
+                            <td>120 seconds</td>
+                        </tr>
+                        <tr>
+                            <td>Timezone</td>
+                            <td>America/Bogota</td>
+                        </tr>
+                        <tr>
+                            <td>OPcache</td>
+                            <td>Enabled (Development Mode)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Installed PHP Extensions -->
+            <div class="panel">
+                <h2 class="panel-title">📦 Pre-installed Extensions</h2>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.75rem;">
+                    Compiled and configured in the Dockerfile:
+                </p>
+                <div class="tags-container">
+                    <span class="tag-item">pdo_mysql</span>
+                    <span class="tag-item">mysqli</span>
+                    <span class="tag-item">gd (QR / Images)</span>
+                    <span class="tag-item">zip (Excel / Zip)</span>
+                    <span class="tag-item">intl</span>
+                    <span class="tag-item">mbstring</span>
+                    <span class="tag-item">exif</span>
+                    <span class="tag-item">opcache</span>
+                    <span class="tag-item">bcmath</span>
+                    <span class="tag-item">soap</span>
+                    <span class="tag-item">xml</span>
+                </div>
+            </div>
+
+            <!-- Ideal Use Cases -->
+            <div class="panel">
+                <h2 class="panel-title">🎯 Ideal Use Cases</h2>
+                <ul class="use-cases-list">
+                    <li>✅ <strong>QR Code Applications</strong> (attendance, ticketing, inventory)</li>
+                    <li>✅ <strong>Spreadsheet Processing</strong> (Excel import / export with PhpSpreadsheet)</li>
+                    <li>✅ <strong>REST APIs & Microservices</strong> connected to MySQL</li>
+                    <li>✅ <strong>School & Enterprise Management</strong> platforms</li>
+                    <li>✅ <strong>Authentication & Sessions</strong> with high security</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Useful Commands -->
+        <div class="panel" style="margin-bottom: 2.5rem;">
+            <h2 class="panel-title">💻 Useful Commands</h2>
+            
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">Start or rebuild stack:</p>
+            <div class="code-block">docker-compose up -d --build</div>
+
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">Enter web container terminal (e.g. for Composer):</p>
+            <div class="code-block">docker-compose exec web bash</div>
+
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">View Apache / PHP live logs:</p>
+            <div class="code-block">docker-compose logs -f web</div>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <p><strong>ilocaldev</strong> &bull; Dockerized PHP Development Environment</p>
+            <p style="margin-top: 0.35rem;">To customize this website, edit <code>src/index.html</code> or add your PHP scripts in <code>src/</code>.</p>
+        </footer>
+    </div>
+</body>
+</html>

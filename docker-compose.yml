@@ -1,0 +1,69 @@
+services:
+  # Servicio Web: Apache + PHP Personalizado
+  web:
+    build:
+      context: ./php  # Directorio donde está el Dockerfile de PHP
+      dockerfile: Dockerfile
+    container_name: mi_app_web_avanzado
+    ports:
+      - "8080:80"    # Accede a tu app en http://localhost:8080
+    volumes:
+      - ./src:/var/www/html  # Monta tu código PHP
+      - ./php/php.ini:/usr/local/etc/php/conf.d/custom-php.ini # Monta tu php.ini personalizado
+    depends_on:
+      - db
+    networks:
+      - app-network
+    environment: # <--- AÑADIDO SOLO PARA TZ
+      # Establecer la zona horaria para el contenedor web (PHP/Apache)
+      TZ: "America/Bogota" # ¡CAMBIA ESTO a tu zona horaria IANA correcta!
+    # Si tenías variables de la app aquí y las quieres mantener, añádelas.
+    # Si no, solo TZ es suficiente para el propósito de la hora.
+
+  # Servicio de Base de Datos: MySQL
+  db:
+    image: mysql:8.0 # O la versión que prefieras
+    container_name: mi_app_db_avanzado
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 'mipassword'
+      MYSQL_DATABASE: 'mi_base_de_datos'
+      MYSQL_USER: 'mi_usuario_db'
+      MYSQL_PASSWORD: 'root'
+      # Establecer la zona horaria para el contenedor de MySQL
+      TZ: "America/Bogota" # ¡CAMBIA ESTO a tu zona horaria IANA correcta!
+    volumes:
+      - db_data_avanzado:/var/lib/mysql # Persistencia de datos de MySQL
+    ports:
+      - "33061:3306" # Opcional: exponer puerto de MySQL al host
+    networks:
+      - app-network
+
+  # Servicio phpMyAdmin
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: mi_app_phpmyadmin_avanzado
+    restart: always
+    ports:
+      - "8081:80"    # Accede a phpMyAdmin en http://localhost:8081
+    environment:
+      PMA_HOST: db          # Nombre del servicio de la base de datos
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: 'mipassword' # Debe coincidir con la de MySQL
+      # Establecer la zona horaria para el contenedor de phpMyAdmin
+      TZ: "America/Bogota" # ¡CAMBIA ESTO a tu zona horaria IANA correcta!
+      # Límites de subida y ejecución para importaciones grandes
+      UPLOAD_LIMIT: "256M"              # Aplica a upload_max_filesize y post_max_size
+      MEMORY_LIMIT: "512M"
+      MAX_EXECUTION_TIME: "600"
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+volumes:
+  db_data_avanzado: # Volumen para persistir los datos de MySQL
+
+networks:
+  app-network:
+    driver: bridge
