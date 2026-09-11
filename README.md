@@ -47,7 +47,7 @@ A complete and optimized development environment for PHP applications with MySQL
 
 ### 1. Clone the repository:
 ```bash
-git clone https://github.com/your-username/ilocaldev.git
+git clone https://github.com/scharss/ilocaldev.git
 cd ilocaldev
 ```
 
@@ -204,6 +204,9 @@ opcache.validate_timestamps = 0
 
 This project is licensed under the MIT License. See `LICENSE` for details.
 
+## 🆘 Support
+
+Encountering issues? Please open an [issue](https://github.com/scharss/ilocaldev/issues)!
 
 ---
 
