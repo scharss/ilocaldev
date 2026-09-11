@@ -86,7 +86,7 @@ User: mi_usuario_db
 Password: root
 Database: mi_base_de_datos
 Root User: root
-Root Password: Hholamundo256@
+Root Password: mipassword
 ```
 
 ### PHP PDO Connection Example:
