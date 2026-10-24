@@ -1,0 +1,143 @@
+; ==========================================
+; PHP.ini Optimizado para Docker + Apache
+; Configuración de Desarrollo/Producción
+; ==========================================
+
+[PHP]
+; Configuración básica del engine
+engine = On
+short_open_tag = Off
+precision = 14
+output_buffering = 4096
+zlib.output_compression = Off
+implicit_flush = Off
+serialize_precision = -1
+
+; Configuración de recursos
+max_execution_time = 120
+max_input_time = 60
+memory_limit = 512M
+
+; Manejo de errores y logging
+; Configuración de DESARROLLO - cambiar para producción
+error_reporting = E_ALL
+display_errors = On
+display_startup_errors = On
+log_errors = On
+ignore_repeated_errors = Off
+ignore_repeated_source = Off
+report_memleaks = On
+
+; Configuración de datos
+variables_order = "GPCS"
+request_order = "GP"
+register_argc_argv = Off
+auto_globals_jit = On
+
+; Límites de POST y archivos
+post_max_size = 128M
+upload_max_filesize = 128M
+max_file_uploads = 20
+
+; Configuración de paths y directorios
+; Docker maneja estos automáticamente
+doc_root = 
+user_dir = 
+enable_dl = Off
+
+; Configuración de subida de archivos
+file_uploads = On
+
+; Configuración de URLs
+allow_url_fopen = On
+allow_url_include = Off
+default_socket_timeout = 60
+
+; Configuración de caracteres por defecto
+default_mimetype = "text/html"
+default_charset = "UTF-8"
+
+; Configuración de zona horaria
+date.timezone = "America/Bogota"
+
+; NOTA: Las extensiones ya están compiladas en el Dockerfile
+; No necesitamos declararlas aquí para evitar advertencias de duplicado
+; Extensiones disponibles: mysqli, pdo_mysql, gd, zip, mbstring, exif, 
+; intl, opcache, bcmath, soap, xml
+
+; Configuración de MySQL
+mysqli.default_port = 3306
+mysqli.default_socket = 
+mysqli.default_host = 
+mysqli.default_user = 
+mysqli.default_pw = 
+mysqli.reconnect = Off
+mysqli.allow_persistent = On
+mysqli.max_persistent = -1
+mysqli.max_links = -1
+
+; Configuración de PDO MySQL
+pdo_mysql.default_socket = 
+
+; Configuración de sesiones
+session.save_handler = files
+session.use_strict_mode = 0
+session.use_cookies = 1
+session.use_only_cookies = 1
+session.name = PHPSESSID
+session.auto_start = 0
+session.cookie_lifetime = 0
+session.cookie_path = /
+session.cookie_domain = 
+session.cookie_httponly = 
+session.cookie_samesite = 
+session.serialize_handler = php
+session.gc_probability = 1
+session.gc_divisor = 1000
+session.gc_maxlifetime = 1440
+session.referer_check = 
+session.cache_limiter = nocache
+session.cache_expire = 180
+session.use_trans_sid = 0
+session.sid_length = 26
+session.trans_sid_tags = "a=href,area=href,frame=src,form="
+session.sid_bits_per_character = 5
+
+; Configuración de OPcache para rendimiento
+opcache.enable = 1
+opcache.enable_cli = 1
+opcache.memory_consumption = 128
+opcache.interned_strings_buffer = 8
+opcache.max_accelerated_files = 10000
+opcache.revalidate_freq = 2
+opcache.fast_shutdown = 1
+opcache.validate_timestamps = 1
+
+; Configuración de mail (para Docker generalmente se usa SMTP externo)
+; Configurar según tu proveedor de email
+sendmail_path = /usr/sbin/sendmail -t -i
+
+; Configuración para las librerías que usas
+; mbstring para caracteres especiales
+mbstring.language = neutral
+mbstring.detect_order = auto
+mbstring.substitute_character = none
+
+; Configuración de GD para imágenes/QR codes
+gd.jpeg_ignore_warning = 1
+
+; Configuración de Exif para metadatos de imágenes
+exif.encode_unicode = ISO-8859-15
+exif.decode_unicode_motorola = UCS-2BE
+exif.decode_unicode_intel = UCS-2LE
+
+; Configuración para desarrollo - COMENTAR EN PRODUCCIÓN
+; Para producción cambiar estos valores:
+; error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT
+; display_errors = Off
+; display_startup_errors = Off
+; opcache.validate_timestamps = 0
+
+; ==========================================
+; FIN DE CONFIGURACIÓN
+; ==========================================

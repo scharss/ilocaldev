@@ -4,6 +4,9 @@ services:
     build:
       context: ./php  # Directorio donde está el Dockerfile de PHP
       dockerfile: Dockerfile
+      args:
+        PHP_VERSION: ${PHP_VERSION:-8.3.36}
+    image: d7-web:${PHP_VERSION:-8.3.36}
     container_name: mi_app_web_avanzado
     ports:
       - "8080:80"    # Accede a tu app en http://localhost:8080
@@ -16,7 +19,7 @@ services:
       - app-network
     environment: # <--- AÑADIDO SOLO PARA TZ
       # Establecer la zona horaria para el contenedor web (PHP/Apache)
-      TZ: "America/Bogota" # ¡CAMBIA ESTO a tu zona horaria IANA correcta!
+      TZ: "${TZ:-America/Bogota}"
     # Si tenías variables de la app aquí y las quieres mantener, añádelas.
     # Si no, solo TZ es suficiente para el propósito de la hora.
 
@@ -26,32 +29,35 @@ services:
     container_name: mi_app_db_avanzado
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: 'mipassword'
-      MYSQL_DATABASE: 'mi_base_de_datos'
-      MYSQL_USER: 'mi_usuario_db'
-      MYSQL_PASSWORD: 'root'
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD:?define MYSQL_ROOT_PASSWORD en .env}"
+      MYSQL_DATABASE: "${MYSQL_DATABASE:-mi_base_de_datos}"
+      MYSQL_USER: "${MYSQL_USER:-mi_usuario_db}"
+      MYSQL_PASSWORD: "${MYSQL_PASSWORD:?define MYSQL_PASSWORD en .env}"
       # Establecer la zona horaria para el contenedor de MySQL
-      TZ: "America/Bogota" # ¡CAMBIA ESTO a tu zona horaria IANA correcta!
+      TZ: "${TZ:-America/Bogota}"
     volumes:
       - db_data_avanzado:/var/lib/mysql # Persistencia de datos de MySQL
     ports:
-      - "33061:3306" # Opcional: exponer puerto de MySQL al host
+      - "127.0.0.1:33061:3306" # MySQL solo accesible desde el host
     networks:
       - app-network
 
   # Servicio phpMyAdmin
   phpmyadmin:
-    image: phpmyadmin/phpmyadmin
+    build:
+      context: ./phpmyadmin
+      dockerfile: Dockerfile
+    image: d7-phpmyadmin:5.2.3-php8.3.36
     container_name: mi_app_phpmyadmin_avanzado
     restart: always
     ports:
-      - "8081:80"    # Accede a phpMyAdmin en http://localhost:8081
+      - "127.0.0.1:8081:80"    # phpMyAdmin solo accesible desde el host
     environment:
-      PMA_HOST: db          # Nombre del servicio de la base de datos
-      PMA_PORT: 3306
-      MYSQL_ROOT_PASSWORD: 'mipassword' # Debe coincidir con la de MySQL
+      PMA_HOST: "${PMA_HOST:-db}"          # Nombre del servicio de la base de datos
+      PMA_PORT: "${PMA_PORT:-3306}"
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD:?define MYSQL_ROOT_PASSWORD en .env}" # Debe coincidir con la de MySQL
       # Establecer la zona horaria para el contenedor de phpMyAdmin
-      TZ: "America/Bogota" # ¡CAMBIA ESTO a tu zona horaria IANA correcta!
+      TZ: "${TZ:-America/Bogota}"
       # Límites de subida y ejecución para importaciones grandes
       UPLOAD_LIMIT: "256M"              # Aplica a upload_max_filesize y post_max_size
       MEMORY_LIMIT: "512M"

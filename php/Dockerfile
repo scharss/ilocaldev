@@ -1,5 +1,22 @@
 # Usar una imagen base de PHP con Apache (elige la versión de PHP que necesites)
-FROM php:8.2-apache
+ARG PHP_VERSION=8.3.36
+FROM php:${PHP_VERSION}-apache-bookworm
+
+ARG PHP_VERSION
+LABEL org.opencontainers.image.version="php-${PHP_VERSION}"
+
+RUN php -r ' \
+    $v = PHP_VERSION; \
+    $min = ["8.2" => "8.2.35", "8.3" => "8.3.36", "8.4" => "8.4.27", "8.5" => "8.5.12"]; \
+    $b = implode(".", array_slice(explode(".", $v), 0, 2)); \
+    if (PHP_INT_SIZE !== 8) { fwrite(STDERR, "Se requiere PHP 64-bit\n"); exit(1); } \
+    if (isset($min[$b]) && version_compare($v, $min[$b], "<")) { \
+        fwrite(STDERR, "PHP $v no tiene los parches requeridos\n"); exit(1); \
+    } \
+    if (version_compare($v, "8.2.35", "<")) { \
+        fwrite(STDERR, "PHP $v es demasiado antiguo\n"); exit(1); \
+    } \
+'
 
 # Variables de entorno (opcional, pero útil)
 ENV COMPOSER_ALLOW_SUPERUSER=1

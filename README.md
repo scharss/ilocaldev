@@ -1,190 +1,210 @@
 # 🐳 ilocaldev - PHP Development Environment with Docker
 
-A complete and optimized development environment for PHP applications with MySQL, ready to use with Docker. Perfect for building applications that require QR codes, Excel spreadsheet processing, database integration, and more.
+Un entorno de desarrollo completo y optimizado para aplicaciones PHP con MySQL, listo para usar con Docker. Perfecto para desarrollar aplicaciones que requieren códigos QR, manejo de Excel, bases de datos y más.
 
-## 🎯 What is this project for?
+## 🎯 ¿Para qué sirve este proyecto?
 
-**ilocaldev** provides a **plug-and-play** local development environment that includes:
+Este proyecto proporciona un entorno de desarrollo **plug-and-play** que incluye:
 
-- **🔧 PHP 8.2** with Apache optimized for development
-- **🗄️ MySQL 8.0** with data persistence
-- **⚙️ phpMyAdmin** for visual database management
-- **📊 Pre-installed extensions** for QR codes, Excel handling, image processing, and more
-- **🚀 Optimized settings** tailored for modern PHP applications
+- **🔧 PHP 8.3.36** con Apache optimizado para desarrollo
+- **🗄️ MySQL 8.0** con persistencia de datos
+- **⚙️ phpMyAdmin** para gestión visual de bases de datos
+- **📊 Extensiones pre-instaladas** para QR codes, Excel, imágenes y más
+- **🚀 Configuración optimizada** para aplicaciones modernas PHP
 
-### 💼 Ideal Use Cases:
+### 💼 Casos de uso ideales:
 
-- ✅ **QR Code** applications (attendance tracking, registration, inventory)
-- ✅ **School or enterprise management** systems
-- ✅ Applications with **Excel handling** (importing/exporting datasets)
-- ✅ **REST APIs** backed by MySQL
-- ✅ **Authentication and session** management systems
-- ✅ Applications with **image processing**
+- ✅ Aplicaciones de **códigos QR** (registro, asistencia, inventario)
+- ✅ Sistemas de **gestión escolar** o empresarial
+- ✅ Aplicaciones con **manejo de Excel** (importar/exportar datos)
+- ✅ **APIs REST** con base de datos MySQL
+- ✅ Sistemas de **autenticación y sesiones**
+- ✅ Aplicaciones con **procesamiento de imágenes**
 
-## 🛠️ Included Technologies
+## 🛠️ Tecnologías Incluidas
 
-| Service | Version | Port |
-|---------|---------|------|
-| **PHP** | 8.2 with Apache | 8080 |
+| Servicio | Versión | Puerto |
+|----------|---------|--------|
+| **PHP** | 8.3.36 con Apache | 8080 |
 | **MySQL** | 8.0 | 33061 |
-| **phpMyAdmin** | Latest | 8081 |
+| **phpMyAdmin** | 5.2.3 con PHP 8.3.36 | 8081 |
 
-### 📦 Pre-installed PHP Extensions:
+### 📦 Extensiones PHP pre-instaladas:
 
-- `mysqli`, `pdo_mysql` - MySQL database connectivity
-- `gd` - Image processing and QR code generation
-- `zip` - Zip archive manipulation and Excel handling (PhpSpreadsheet)
-- `mbstring` - Multibyte string support
-- `intl` - Internationalization (dates, numbers, currencies)
-- `exif` - Image metadata extraction
-- `opcache` - PHP performance caching
-- `bcmath`, `soap`, `xml` - Arbitrary precision mathematics and web services
+- `mysqli`, `pdo_mysql` - Conexión a bases de datos
+- `gd` - Procesamiento de imágenes y códigos QR
+- `zip` - Manejo de archivos comprimidos y Excel
+- `mbstring` - Soporte para caracteres multibyte
+- `intl` - Internacionalización (fechas, números)
+- `exif` - Metadatos de imágenes
+- `opcache` - Cache de rendimiento
+- `bcmath`, `soap`, `xml` - Matemáticas y servicios web
 
-## 🚀 Quick Start
+## 🚀 Instalación Rápida
 
-### Prerequisites:
-- [Docker Desktop](https://www.docker.com/products/docker-desktop) installed and running
+### Requisitos previos:
+- [Docker Desktop](https://www.docker.com/products/docker-desktop) instalado
 
-### 1. Clone the repository:
+### 1. Clonar el repositorio:
 ```bash
 git clone https://github.com/scharss/ilocaldev.git
-cd ilocaldev
+
 ```
 
-### 2. Start the environment:
+### 2. Iniciar el entorno:
 ```bash
 docker-compose up -d --build
 ```
 
-### 3. Access your services:
-- 🌐 **Web Application**: http://localhost:8080
-- 💾 **phpMyAdmin**: http://localhost:8081
-- 🗄️ **MySQL Database**: localhost:33061
+## 🐘 Versión de PHP configurable
 
-## 🏗️ Project Structure
+La versión de PHP del contenedor web se define en `.env`:
+
+```env
+PHP_VERSION=8.3.36
+```
+
+Después de cambiarla, reconstruye y recrea el contenedor web:
+
+```bash
+docker compose build --pull web
+docker compose up -d --no-deps --force-recreate web
+```
+
+La versión mínima aceptada es la que incluye los parches de CVE-2026-109618 y CVE-2026-109619: **8.2.35, 8.3.36, 8.4.27 o 8.5.12**.
+
+### 3. ¡Listo! Accede a:
+- 🌐 **Tu aplicación**: http://localhost:8080
+- 💾 **phpMyAdmin**: http://localhost:8081
+- 🗄️ **MySQL**: localhost:33061
+
+## 🏗️ Estructura del Proyecto
 
 ```
-ilocaldev/
-├── docker-compose.yml    # Docker services orchestration
+proyecto/
+├── docker-compose.yml    # Configuración de servicios Docker
 ├── php/
-│   ├── Dockerfile       # Custom PHP image definition
-│   └── php.ini          # Optimized PHP configuration
-├── src/                 # 📁 Put your PHP application code here
-│   └── index.html       # Sample entry point
+│   ├── Dockerfile       # Imagen PHP personalizada
+│   └── php.ini          # Configuración PHP optimizada
+├── src/                 # 📁 Aquí va tu código PHP
+│   └── index.php        # Archivo de ejemplo
 └── README.md
 ```
 
-## 🔧 Database Configuration
+## 🔧 Configuración de Base de Datos
 
-### Default credentials:
+### Credenciales:
 
-```bash
-# MySQL Configuration
-Host: db                    # (inside Docker network)
-Host: localhost:33061       # (from your host machine)
-User: mi_usuario_db
-Password: root
-Database: mi_base_de_datos
-Root User: root
-Root Password: mipassword
+Las credenciales de MySQL se definen en `.env`:
+
+```env
+MYSQL_ROOT_PASSWORD=...
+MYSQL_DATABASE=...
+MYSQL_USER=...
+MYSQL_PASSWORD=...
 ```
 
-### PHP PDO Connection Example:
+> `docker compose config` resuelve las variables y muestra las contraseñas. No compartas su salida. Para validar sin imprimir nada usa `docker compose config --quiet`.
+
+Host: `db` (dentro de Docker)  
+Host: `localhost:33061` (desde tu PC)
+
+### Conexión desde PHP:
 ```php
 <?php
-// PDO Connection example
+// Ejemplo de conexión PDO
 try {
-    $pdo = new PDO('mysql:host=db;dbname=mi_base_de_datos', 'mi_usuario_db', 'root');
+    $pdo = new PDO('mysql:host=db;dbname=mi_base_de_datos', 'mi_usuario_db', 'TU_PASSWORD');
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    echo "✅ Successfully connected to MySQL";
+    echo "✅ Conexión exitosa a MySQL";
 } catch(PDOException $e) {
     echo "❌ Error: " . $e->getMessage();
 }
 ?>
 ```
 
-## 📝 Development Workflow
+## 📝 Desarrollo
 
-### 1. Adding your code:
-Place all your PHP files inside the `src/` directory:
+### 1. Colocar tu código:
+Coloca todos tus archivos PHP en la carpeta `src/`:
 ```
 src/
 ├── index.php
 ├── config/
 ├── includes/
-└── your-app/
+└── tu-aplicacion/
 ```
 
-### 2. Managing dependencies with Composer:
+### 2. Instalar dependencias con Composer:
 ```bash
-# Enter the web container
+# Entrar al contenedor
 docker-compose exec web bash
 
-# Inside the container
+# Dentro del contenedor
 composer install
-composer require phpoffice/phpspreadsheet  # For Excel manipulation
-composer require chillerlan/php-qr-code    # For QR code generation
+composer require phpoffice/phpspreadsheet  # Para Excel
+composer require chillerlan/php-qr-code    # Para códigos QR
 ```
 
-### 3. Viewing logs in real time:
+### 3. Ver logs en tiempo real:
 ```bash
-docker-compose logs -f web    # PHP / Apache logs
-docker-compose logs -f db     # MySQL logs
+docker-compose logs -f web    # Logs de PHP/Apache
+docker-compose logs -f db     # Logs de MySQL
 ```
 
-## 🎛️ Useful Commands
+## 🎛️ Comandos Útiles
 
-### Container management:
+### Administración de contenedores:
 ```bash
-# Check container status
+# Ver estado de contenedores
 docker-compose ps
 
-# Stop all containers
+# Detener todo
 docker-compose down
 
-# Rebuild containers after Dockerfile or configuration changes
+# Reconstruir después de cambios
 docker-compose up -d --build
 
-# Remove all containers and volumes (CAUTION: wipes database data!)
+# Limpiar todo (¡ELIMINA DATOS!)
 docker-compose down -v
 ```
 
-### Accessing containers:
+### Acceso a contenedores:
 ```bash
-# Enter PHP/Apache container terminal
+# Entrar al contenedor web (PHP)
 docker-compose exec web bash
 
-# Access MySQL CLI directly
+# Entrar al contenedor de MySQL
 docker-compose exec db mysql -u root -p
 ```
 
-### Database backup and restore:
+### Backup de base de datos:
 ```bash
-# Export / dump database
+# Exportar base de datos
 docker-compose exec db mysqldump -u root -p mi_base_de_datos > backup.sql
 
-# Import database dump
+# Importar base de datos
 docker-compose exec -T db mysql -u root -p mi_base_de_datos < backup.sql
 ```
 
-## ⚡ Optimized Configuration
+## ⚡ Configuración Optimizada
 
-### Increased limits for development:
+### Límites aumentados para desarrollo:
 - **Memory limit**: 512MB
-- **Upload max filesize**: 128MB
-- **Post max size**: 128MB
-- **Max execution time**: 120 seconds
+- **Upload max**: 128MB
+- **Post max**: 128MB
+- **Execution time**: 120 segundos
 - **Timezone**: America/Bogota
 
-### Applying configuration changes:
-Edit `php/php.ini` and rebuild containers:
+### Para cambiar configuraciones:
+Edita `php/php.ini` y reconstruye:
 ```bash
 docker-compose up -d --build
 ```
 
-## 🌍 Production Considerations
+## 🌍 Para Producción
 
-For production deployments, update the following values in `php/php.ini`:
+Para usar en producción, modifica en `php/php.ini`:
 ```ini
 error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT
 display_errors = Off
@@ -192,22 +212,41 @@ display_startup_errors = Off
 opcache.validate_timestamps = 0
 ```
 
-## 🤝 Contributing
+## 🤝 Contribuir
 
-1. Fork the repository
-2. Create your branch: `git checkout -b feature/new-feature`
-3. Commit your changes: `git commit -m 'Add new feature'`
-4. Push to the branch: `git push origin feature/new-feature`
-5. Open a Pull Request
+1. Fork del proyecto
+2. Crea tu rama: `git checkout -b feature/nueva-funcionalidad`
+3. Commit: `git commit -m 'Agregar nueva funcionalidad'`
+4. Push: `git push origin feature/nueva-funcionalidad`
+5. Abre un Pull Request
 
-## 📜 License
+## 📜 Licencia
 
-This project is licensed under the MIT License. See `LICENSE` for details.
+Este proyecto está bajo la Licencia MIT. Ver `LICENSE` para más detalles.
 
-## 🆘 Support
+## 🆘 Soporte
 
-Encountering issues? Please open an [issue](https://github.com/scharss/ilocaldev/issues)!
+¿Problemas? ¡Abre un [issue](https://github.com/tu-usuario/php-docker-dev/issues)!
 
 ---
 
-⭐ **If you find this project helpful, give it a star!** ⭐
+⭐ **¡Si te gusta este proyecto, dale una estrella!** ⭐
+
+
+; Para producción cambiar a:
+error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT
+display_errors = Off
+display_startup_errors = Off
+opcache.validate_timestamps = 0
+
+
+
+
+
+
+
+
+
+
+
+
