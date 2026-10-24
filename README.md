@@ -1,4 +1,4 @@
-# 🐳 ilocaldev - PHP Development Environment with Docker
+# 🐳 iLocalDev - PHP Development Environment with Docker
 
 Un entorno de desarrollo completo y optimizado para aplicaciones PHP con MySQL, listo para usar con Docker. Perfecto para desarrollar aplicaciones que requieren códigos QR, manejo de Excel, bases de datos y más.
 
