@@ -6,7 +6,7 @@ A complete, optimized development environment for PHP applications with MySQL, r
 
 This project provides a **plug-and-play** development environment that includes:
 
-- **🔧 PHP 8.3.36** with Apache optimized for development
+- **🔧 Configurable PHP version** (8.3.36 by default) with Apache optimized for development — set `PHP_VERSION` in `.env` to use another patched PHP release.
 - **🗄️ MySQL 8.0** with data persistence
 - **⚙️ phpMyAdmin** for visual database management
 - **📊 Pre-installed extensions** for QR codes, Excel, images, and more
