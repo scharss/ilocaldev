@@ -12,14 +12,26 @@ Este proyecto proporciona un entorno de desarrollo **plug-and-play** que incluye
 - **📊 Extensiones pre-instaladas** para QR codes, Excel, imágenes y más
 - **🚀 Configuración optimizada** para aplicaciones modernas PHP
 
-### 💼 Casos de uso ideales:
+### 💼 Casos de uso ideales
 
-- ✅ Aplicaciones de **códigos QR** (registro, asistencia, inventario)
-- ✅ Sistemas de **gestión escolar** o empresarial
-- ✅ Aplicaciones con **manejo de Excel** (importar/exportar datos)
-- ✅ **APIs REST** con base de datos MySQL
-- ✅ Sistemas de **autenticación y sesiones**
-- ✅ Aplicaciones con **procesamiento de imágenes**
+Este entorno sirve para **Desarrollo Web** en general, no solo para una aplicación concreta. Puedes tener varios proyectos conviviendo en `src/`.
+
+**Desarrollo Web**
+- ✅ **Desarrollo Web** de sitios corporativos, blogs, landing pages, portafolios, intranets y aplicaciones a medida
+
+**CMS**
+- ✅ WordPress: temas, plugins y multisitio
+
+**Aplicaciones y utilidades**
+- ✅ Sistemas de QR/NFC, asistencia, inventario y trazabilidad
+- ✅ Gestión escolar, empresarial, clientes, citas y reportes
+- ✅ Importación/exportación de Excel/CSV y generación de reportes
+- ✅ Autenticación, sesiones, roles y paneles administrativos
+- ✅ Procesamiento de imágenes, generación de códigos QR y archivos ZIP
+- ✅ Migración de proyectos PHP legacy y pruebas locales
+- ✅ Laboratorio multi-proyecto: varias webs y bases de datos en el mismo entorno
+
+> **Compatibilidad:** ilocaldev está pensado para aplicaciones PHP servidas desde la raíz del proyecto. Frameworks o CMS que requieran `DocumentRoot` en `public/` necesitan configuración adicional de Apache.
 
 ## 🛠️ Tecnologías Incluidas
 
@@ -39,6 +51,15 @@ Este proyecto proporciona un entorno de desarrollo **plug-and-play** que incluye
 - `exif` - Metadatos de imágenes
 - `opcache` - Cache de rendimiento
 - `bcmath`, `soap`, `xml` - Matemáticas y servicios web
+
+### 🧰 Herramientas incluidas
+
+- Composer 2.x
+- Git
+- curl
+- zip/unzip
+- Apache con `mod_rewrite`
+- OPcache
 
 ## 🚀 Instalación Rápida
 
